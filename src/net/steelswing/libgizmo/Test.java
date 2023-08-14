@@ -305,7 +305,7 @@ public class Test {
     }
 
     public static void main(String[] args) throws Throwable {
-        System.load("D:\\BackupWinda\\Documents\\TalltaleOnline\\LibGizmo\\dist\\Debug\\MinGWW-Windows\\libLibGizmo.dll");
+        System.load("libLibGizmo.dll");
         new Test().run();
     }
 
