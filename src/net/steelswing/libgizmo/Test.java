@@ -5,7 +5,6 @@
 
 package net.steelswing.libgizmo;
 
-import java.io.File;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import net.steelswing.libgizmo.glu.GLU;
@@ -425,7 +424,6 @@ public class Test {
     }
 
     public static void main(String[] args) throws Throwable {
-        System.load(new File("libLibGizmo.dll").getAbsolutePath());
         new Test().run();
     }
 
