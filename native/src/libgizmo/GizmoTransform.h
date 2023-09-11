@@ -271,7 +271,7 @@ protected:
     void SnapIt(float &pos, float &snap) {
         float sn = (float) fmod(pos, snap);
         if (fabs(sn)< (snap * 0.25f)) pos -= sn;
-        if (fabs(sn)> (snap * 0.75f)) pos = ((pos - sn) + ((sn > 0) ? snap : -snap));
+        if (fabs(sn)> (snap * 0.25f)) pos = ((pos - sn) + ((sn > 0) ? snap : -snap));
     }
 
     int mScreenWidth, mScreenHeight;

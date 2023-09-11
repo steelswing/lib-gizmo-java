@@ -4,36 +4,31 @@ Well, you do understand that the code here is only mine?
  */
 
 
-
+#ifdef TEST_MAIN_CPP
 #include <windows.h>  // Header File For Windows
-#include <stdio.h>   // Header File For Standard Input/Output
 #include <gl\gl.h>   // Header File For The OpenGL32 Library
 #include <gl\glu.h>   // Header File For The GLu32 Library
+#include <stdio.h>   // Header File For Standard Input/Output
+#endif
+
+
+#include "jnimain.h"
+
+#include "libgizmo/stdafx.h"
 #include <math.h>
-#include <iostream>
-#include "libgizmo/IGizmo.h"
+#include "libgizmo/GizmoTransform.h"
+#include "GizmoJNIEnv.h"
 
-#include "net_steelswing_libgizmo_LibGizmo.h"
 
+#ifdef TEST_MAIN_CPP
 int WINAPI start_debug_window();
-
+#endif
 //
 //public static enum Type {
 //   GIZMO_MOVE,
 //   GIZMO_SCALE,
 //   GIZMO_ROTATE
 //}
-
-/*
- * Class:     net_steelswing_libgizmo_LibGizmo
- * Method:    create_test_window
- * Signature: (Ljava/lang/Runnable;)V
- */
-JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_create_1test_1window(JNIEnv *env, jclass cls, jobject runnable) {
-#ifdef TEST_MAIN_CPP
-    start_debug_window();
-#endif
-}
 
 JNIEXPORT jobject JNICALL Java_net_steelswing_libgizmo_LibGizmo_nCreate(JNIEnv *env, jclass clazz, jint type) {
     jclass javaGlobalClass = reinterpret_cast<jclass> (env->NewGlobalRef(clazz));
@@ -194,7 +189,7 @@ JNIEXPORT jboolean JNICALL Java_net_steelswing_libgizmo_LibGizmo_nIsUsingSnap(JN
  * Method:    nSetSnap
  * Signature: (FFF)V
  */
-JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__FFF(JNIEnv *env, jclass cls, jlong pointer, jfloat snapx, jfloat snapy, jfloat snapz) {
+JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__JFFF(JNIEnv *env, jclass cls, jlong pointer, jfloat snapx, jfloat snapy, jfloat snapz) {
     IGizmo* gizmo = reinterpret_cast<IGizmo*> (pointer);
     if (gizmo == nullptr) {
         std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__FFF\n";
@@ -208,7 +203,7 @@ JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__FFF(JNIEn
  * Method:    nSetSnap
  * Signature: (F)V
  */
-JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__F(JNIEnv *env, jclass cls, jlong pointer, jfloat snap) {
+JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__JF(JNIEnv *env, jclass cls, jlong pointer, jfloat snap) {
     IGizmo* gizmo = reinterpret_cast<IGizmo*> (pointer);
     if (gizmo == nullptr) {
         std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nSetSnap__F\n";
@@ -260,6 +255,7 @@ JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetAxisMask(JNIEnv
     }
     gizmo->SetAxisMask(mask);
 }
+GizmoJNIEnv* gizmoEnvJNI = nullptr;
 
 /*
  * Class:     net_steelswing_libgizmo_LibGizmo
@@ -272,5 +268,15 @@ JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nDraw(JNIEnv *env, 
         std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nDraw\n";
         return;
     }
-    gizmo->Draw();
+    gizmo->Draw(env);
+    //    if (gizmoEnvJNI != nullptr)
+    //        gizmoEnvJNI->call();
+}
+
+/*
+ * Class:     net_steelswing_libgizmo_LibGizmo
+ * Method:    create_test_window
+ * Signature: (Ljava/lang/Runnable;)V
+ */
+JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_create_1test_1window(JNIEnv *env, jclass cls, jobject runnable) {
 }

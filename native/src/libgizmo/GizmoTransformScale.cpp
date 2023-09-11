@@ -259,7 +259,7 @@ void CGizmoTransformScale::OnMouseUp(unsigned int x, unsigned int y) {
     m_ScaleType = SCALE_NONE;
 }
 
-void CGizmoTransformScale::Draw() {
+void CGizmoTransformScale::Draw(JNIEnv *env) {
     if (m_pMatrix) {
         ComputeScreenFactor();
 
@@ -278,9 +278,9 @@ void CGizmoTransformScale::Draw() {
             axeZ.Normalize();
         }
 
-        DrawTri(orig, 0.5f * GetScreenFactor(), ((m_ScaleTypePredict == SCALE_XZ) || (m_ScaleTypePredict == SCALE_XYZ)), axeX, axeZ);
-        DrawTri(orig, 0.5f * GetScreenFactor(), ((m_ScaleTypePredict == SCALE_XY) || (m_ScaleTypePredict == SCALE_XYZ)), axeX, axeY);
-        DrawTri(orig, 0.5f * GetScreenFactor(), ((m_ScaleTypePredict == SCALE_YZ) || (m_ScaleTypePredict == SCALE_XYZ)), axeY, axeZ);
+        DrawTri(env, orig, 0.5f * GetScreenFactor(), ((m_ScaleTypePredict == SCALE_XZ) || (m_ScaleTypePredict == SCALE_XYZ)), axeX, axeZ);
+        DrawTri(env, orig, 0.5f * GetScreenFactor(), ((m_ScaleTypePredict == SCALE_XY) || (m_ScaleTypePredict == SCALE_XYZ)), axeX, axeY);
+        DrawTri(env, orig, 0.5f * GetScreenFactor(), ((m_ScaleTypePredict == SCALE_YZ) || (m_ScaleTypePredict == SCALE_XYZ)), axeY, axeZ);
 
         axeX *= GetScreenFactor();
         axeY *= GetScreenFactor();
@@ -289,21 +289,21 @@ void CGizmoTransformScale::Draw() {
 
         // plan1
         if (m_ScaleTypePredict != SCALE_X)
-            DrawAxis(orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 0, 0, 1));
+            DrawAxis(env, orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 0, 0, 1));
         else
-            DrawAxis(orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
+            DrawAxis(env, orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
 
         //plan2
         if (m_ScaleTypePredict != SCALE_Y)
-            DrawAxis(orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(0, 1, 0, 1));
+            DrawAxis(env, orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(0, 1, 0, 1));
         else
-            DrawAxis(orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
+            DrawAxis(env, orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
 
         //plan3
         if (m_ScaleTypePredict != SCALE_Z)
-            DrawAxis(orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(0, 0, 1, 1));
+            DrawAxis(env, orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(0, 0, 1, 1));
         else
-            DrawAxis(orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(1, 1, 1, 1));
+            DrawAxis(env, orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(1, 1, 1, 1));
 
         /*
                         // debug

@@ -44,7 +44,7 @@ public:
     virtual void OnMouseMove(unsigned int x, unsigned int y);
     virtual void OnMouseUp(unsigned int x, unsigned int y);
 
-    virtual void Draw();
+    virtual void Draw(JNIEnv *env);
     // snap
 
     virtual void SetSnap(float snapx, float snapy, float snapz) {

@@ -29,13 +29,24 @@
 
 #include "stdafx.h"
 #include "GizmoTransformRender.h"
+#include "../jnimain.h"
+
+#ifdef DEFAULT_RENDERER
 #ifdef MAC_OS
 #import <OpenGL/OpenGL.h>
 #else
 #include <GL/gl.h>
 #endif
+#endif
 
-void CGizmoTransformRender::DrawCircle(const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty) {
+void CGizmoTransformRender::DrawCircle(JNIEnv *env, const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty) {
+    jclass clazz = env->FindClass("net/steelswing/libgizmo/LibGizmoRenderer");
+    jmethodID method = (env)->GetStaticMethodID(clazz, "DrawCircle", "(Lnet/steelswing/libgizmo/tvector3;FFFLnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;)V");
+    if (method != nullptr) {
+        env->CallStaticVoidMethod(clazz, method, getGizmoEnv()->newVector3(env, orig), r, g, b, getGizmoEnv()->newVector3(env, vtx), getGizmoEnv()->newVector3(env, vty));
+    }
+
+#ifdef DEFAULT_RENDERER
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glColor4f(r, g, b, 1);
@@ -49,9 +60,21 @@ void CGizmoTransformRender::DrawCircle(const tvector3 &orig, float r, float g, f
         glVertex3f(vt.x, vt.y, vt.z);
     }
     glEnd();
+#endif
+
 }
 
-void CGizmoTransformRender::DrawCircleHalf(const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty, tplane &camPlan) {
+void CGizmoTransformRender::DrawCircleHalf(JNIEnv *env, const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty, tplane &camPlan) {
+    jclass clazz = env->FindClass("net/steelswing/libgizmo/LibGizmoRenderer");
+    if (clazz == nullptr) {
+        std::cout << "Class not found!" << std::endl;
+        return;
+    }
+    jmethodID method = (env)->GetStaticMethodID(clazz, "DrawCircleHalf", "(Lnet/steelswing/libgizmo/tvector3;FFFLnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tplane;)V");
+    if (method != nullptr) {
+        env->CallStaticVoidMethod(clazz, method, getGizmoEnv()->newVector3(env, orig), r, g, b, getGizmoEnv()->newVector3(env, vtx), getGizmoEnv()->newVector3(env, vty), getGizmoEnv()->newVector4(env, camPlan));
+    }
+#ifdef DEFAULT_RENDERER
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glColor4f(r, g, b, 1);
@@ -66,9 +89,20 @@ void CGizmoTransformRender::DrawCircleHalf(const tvector3 &orig, float r, float 
             glVertex3f(vt.x, vt.y, vt.z);
     }
     glEnd();
+#endif
 }
 
-void CGizmoTransformRender::DrawAxis(const tvector3 &orig, const tvector3 &axis, const tvector3 &vtx, const tvector3 &vty, float fct, float fct2, const tvector4 &col) {
+void CGizmoTransformRender::DrawAxis(JNIEnv *env, const tvector3 &orig, const tvector3 &axis, const tvector3 &vtx, const tvector3 &vty, float fct, float fct2, const tvector4 &col) {
+    jclass clazz = env->FindClass("net/steelswing/libgizmo/LibGizmoRenderer");
+    if (clazz == nullptr) {
+        std::cout << "Class not found!" << std::endl;
+        return;
+    }
+    jmethodID method = (env)->GetStaticMethodID(clazz, "DrawAxis", "(Lnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;FFLnet/steelswing/libgizmo/tvector4;)V");
+    if (method != nullptr) {
+        env->CallStaticVoidMethod(clazz, method, getGizmoEnv()->newVector3(env, orig), getGizmoEnv()->newVector3(env, axis), getGizmoEnv()->newVector3(env, vtx), getGizmoEnv()->newVector3(env, vty), fct, fct2, getGizmoEnv()->newVector4(env, col));
+    }
+#ifdef DEFAULT_RENDERER
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glColor4fv(&col.x);
@@ -94,10 +128,20 @@ void CGizmoTransformRender::DrawAxis(const tvector3 &orig, const tvector3 &axis,
 
     }
     glEnd();
-
+#endif
 }
 
-void CGizmoTransformRender::DrawCamem(const tvector3& orig, const tvector3& vtx, const tvector3& vty, float ng) {
+void CGizmoTransformRender::DrawCamem(JNIEnv *env, const tvector3& orig, const tvector3& vtx, const tvector3& vty, float ng) {
+    jclass clazz = env->FindClass("net/steelswing/libgizmo/LibGizmoRenderer");
+    if (clazz == nullptr) {
+        std::cout << "Class not found!" << std::endl;
+        return;
+    }
+    jmethodID method = (env)->GetStaticMethodID(clazz, "DrawCamem", "(Lnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;F)V");
+    if (method != nullptr) {
+        env->CallStaticVoidMethod(clazz, method, getGizmoEnv()->newVector3(env, orig), getGizmoEnv()->newVector3(env, vtx), getGizmoEnv()->newVector3(env, vty), ng);
+    }
+#ifdef DEFAULT_RENDERER
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     int i = 0;
@@ -136,9 +180,21 @@ void CGizmoTransformRender::DrawCamem(const tvector3& orig, const tvector3& vtx,
     }
 
     glEnd();
+#endif
 }
 
-void CGizmoTransformRender::DrawQuad(const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3 &axisV) {
+void CGizmoTransformRender::DrawQuad(JNIEnv *env, const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3 &axisV) {
+    jclass clazz = env->FindClass("net/steelswing/libgizmo/LibGizmoRenderer");
+    if (clazz == nullptr) {
+        std::cout << "Class not found!" << std::endl;
+        return;
+    }
+    jmethodID method = (env)->GetStaticMethodID(clazz, "DrawQuad", "(Lnet/steelswing/libgizmo/tvector3;FZLnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;)V");
+    if (method != nullptr) {
+        env->CallStaticVoidMethod(clazz, method, getGizmoEnv()->newVector3(env, orig), size, bSelected, getGizmoEnv()->newVector3(env, axisU), getGizmoEnv()->newVector3(env, axisV));
+    }
+
+#ifdef DEFAULT_RENDERER
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glEnable(GL_BLEND);
@@ -177,9 +233,20 @@ void CGizmoTransformRender::DrawQuad(const tvector3& orig, float size, bool bSel
     glEnd();
 
     glDisable(GL_BLEND);
+#endif
 }
 
-void CGizmoTransformRender::DrawTri(const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3& axisV) {
+void CGizmoTransformRender::DrawTri(JNIEnv *env, const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3& axisV) {
+    jclass clazz = env->FindClass("net/steelswing/libgizmo/LibGizmoRenderer");
+    if (clazz == nullptr) {
+        std::cout << "Class not found!" << std::endl;
+        return;
+    }
+    jmethodID method = (env)->GetStaticMethodID(clazz, "DrawTri", "(Lnet/steelswing/libgizmo/tvector3;FZLnet/steelswing/libgizmo/tvector3;Lnet/steelswing/libgizmo/tvector3;)V");
+    if (method != nullptr) {
+        env->CallStaticVoidMethod(clazz, method, getGizmoEnv()->newVector3(env, orig), size, bSelected, getGizmoEnv()->newVector3(env, axisU), getGizmoEnv()->newVector3(env, axisV));
+    }
+#ifdef DEFAULT_RENDERER
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_LIGHTING);
     glEnable(GL_BLEND);
@@ -222,4 +289,5 @@ void CGizmoTransformRender::DrawTri(const tvector3& orig, float size, bool bSele
     glEnd();
 
     glDisable(GL_BLEND);
+#endif
 }

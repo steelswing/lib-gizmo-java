@@ -15,6 +15,9 @@ import java.nio.FloatBuffer;
  */
 public class LibGizmo {
 
+    static {
+        NativeLoader.init();
+    }
 
     private long pointer;
 

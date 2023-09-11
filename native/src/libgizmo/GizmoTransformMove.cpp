@@ -207,7 +207,7 @@ void CGizmoTransformMove::OnMouseUp(unsigned int x, unsigned int y) {
     m_MoveType = MOVE_NONE;
 }
 
-void CGizmoTransformMove::Draw() {
+void CGizmoTransformMove::Draw(JNIEnv *env) {
     ComputeScreenFactor();
 
     if (m_pMatrix) {
@@ -230,25 +230,25 @@ void CGizmoTransformMove::Draw() {
 
 
 
-        DrawQuad(orig, 0.5f * GetScreenFactor(), (m_MoveTypePredict == MOVE_XZ), axeX, axeZ);
-        DrawQuad(orig, 0.5f * GetScreenFactor(), (m_MoveTypePredict == MOVE_XY), axeX, axeY);
-        DrawQuad(orig, 0.5f * GetScreenFactor(), (m_MoveTypePredict == MOVE_YZ), axeY, axeZ);
+        DrawQuad(env, orig, 0.5f * GetScreenFactor(), (m_MoveTypePredict == MOVE_XZ), axeX, axeZ);
+        DrawQuad(env, orig, 0.5f * GetScreenFactor(), (m_MoveTypePredict == MOVE_XY), axeX, axeY);
+        DrawQuad(env, orig, 0.5f * GetScreenFactor(), (m_MoveTypePredict == MOVE_YZ), axeY, axeZ);
 
         axeX *= GetScreenFactor();
         axeY *= GetScreenFactor();
         axeZ *= GetScreenFactor();
 
         // plan1
-        if (m_MoveTypePredict != MOVE_X) DrawAxis(orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 0, 0, 1));
-        else DrawAxis(orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
+        if (m_MoveTypePredict != MOVE_X) DrawAxis(env, orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 0, 0, 1));
+        else DrawAxis(env, orig, axeX, axeY, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
 
         //plan2
-        if (m_MoveTypePredict != MOVE_Y) DrawAxis(orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(0, 1, 0, 1));
-        else DrawAxis(orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
+        if (m_MoveTypePredict != MOVE_Y) DrawAxis(env, orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(0, 1, 0, 1));
+        else DrawAxis(env, orig, axeY, axeX, axeZ, 0.05f, 0.83f, vector4(1, 1, 1, 1));
 
         //plan3
-        if (m_MoveTypePredict != MOVE_Z) DrawAxis(orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(0, 0, 1, 1));
-        else DrawAxis(orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(1, 1, 1, 1));
+        if (m_MoveTypePredict != MOVE_Z) DrawAxis(env, orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(0, 0, 1, 1));
+        else DrawAxis(env, orig, axeZ, axeX, axeY, 0.05f, 0.83f, vector4(1, 1, 1, 1));
 #if 0
 #ifdef WIN32
         GDD->GetD3D9Device()->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);

@@ -4,9 +4,11 @@
 
 #ifndef _Included_net_steelswing_libgizmo_LibGizmo
 #define _Included_net_steelswing_libgizmo_LibGizmo
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
     /*
      * Class:     net_steelswing_libgizmo_LibGizmo
      * Method:    nCreate
@@ -143,6 +145,15 @@ extern "C" {
     JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_create_1test_1window
     (JNIEnv *, jclass, jobject);
 
+    /*
+     * Class:     net_steelswing_libgizmo_LibGizmo
+     * Method:    nSetRenderer
+     * Signature: (JLjava/lang/Object;)V
+     */
+    JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetRenderer
+    (JNIEnv *, jclass, jlong, jobject);
+
+     
 #ifdef __cplusplus
 }
 #endif

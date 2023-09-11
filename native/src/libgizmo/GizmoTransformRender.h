@@ -30,6 +30,7 @@
 
 #ifndef GIZMOTRANSFORMRENDER_H__
 #define GIZMOTRANSFORMRENDER_H__
+#include <jni.h>
 
 typedef tvector4 tplane;
 
@@ -42,12 +43,12 @@ public:
     virtual ~CGizmoTransformRender() {
     }
 
-    static void DrawCircle(const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty);
-    static void DrawCircleHalf(const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty, tplane &camPlan);
-    static void DrawAxis(const tvector3 &orig, const tvector3 &axis, const tvector3 &vtx, const tvector3 &vty, float fct, float fct2, const tvector4 &col);
-    static void DrawCamem(const tvector3& orig, const tvector3& vtx, const tvector3& vty, float ng);
-    static void DrawQuad(const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3 &axisV);
-    static void DrawTri(const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3& axisV);
+    static void DrawCircle(JNIEnv *env,const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty);
+    static void DrawCircleHalf(JNIEnv *env,const tvector3 &orig, float r, float g, float b, const tvector3 &vtx, const tvector3 &vty, tplane &camPlan);
+    static void DrawAxis(JNIEnv *env,const tvector3 &orig, const tvector3 &axis, const tvector3 &vtx, const tvector3 &vty, float fct, float fct2, const tvector4 &col);
+    static void DrawCamem(JNIEnv *env,const tvector3& orig, const tvector3& vtx, const tvector3& vty, float ng);
+    static void DrawQuad(JNIEnv *env,const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3 &axisV);
+    static void DrawTri(JNIEnv *env,const tvector3& orig, float size, bool bSelected, const tvector3& axisU, const tvector3& axisV);
 };
 
 #endif // !defined(AFX_GIZMOTRANSFORMRENDER_H__549F6E7A_D46D_4B18_9E74_76B7E43A3841__INCLUDED_)

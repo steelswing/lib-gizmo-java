@@ -42,7 +42,7 @@ public:
     virtual void OnMouseMove(unsigned int x, unsigned int y);
     virtual void OnMouseUp(unsigned int x, unsigned int y);
 
-    virtual void Draw();
+    virtual void Draw(JNIEnv *env);
 
     virtual void SetSnap(const float snap) {
         m_AngleSnap = snap;

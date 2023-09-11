@@ -28,7 +28,6 @@
 
 #ifndef IGIZMO_H__
 #define IGIZMO_H__
-
 class IGizmo {
 public:
 
@@ -71,7 +70,7 @@ public:
     virtual void SetAxisMask(unsigned int mask) = 0;
 
     // rendering
-    virtual void Draw() = 0;
+    virtual void Draw(JNIEnv *env) = 0;
 };
 
 // Create new gizmo

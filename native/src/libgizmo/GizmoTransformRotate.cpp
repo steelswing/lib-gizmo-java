@@ -29,6 +29,8 @@
 
 #include "stdafx.h"
 #include "GizmoTransformRotate.h"
+#include <stdio.h>
+#include <iostream>
 #ifdef MAC_OS
 #import <OpenGL/OpenGL.h>
 #else
@@ -189,7 +191,7 @@ void CGizmoTransformRotate::Rotate1Axe(const tvector3& rayOrigin, const tvector3
 
     tmatrix mt, mt2;
 
-    if (m_bUseSnap) {
+    if (m_bUseSnap ) {
         m_Ng2 *= (360.0f / ZPI);
         SnapIt(m_Ng2, m_AngleSnap);
         m_Ng2 /= (360.0f / ZPI);
@@ -294,7 +296,7 @@ void CGizmoTransformRotate::OnMouseUp(unsigned int x, unsigned int y) {
             sprintf(tmps, "%5.2f %5.2f %5.2f %5.2f", plCam.x, plCam.y, plCam.z, plCam.w );
             MessageBoxA(NULL, tmps, tmps, MB_OK);
  */
-void CGizmoTransformRotate::Draw() {
+void CGizmoTransformRotate::Draw(JNIEnv *env) {
     if (m_pMatrix) {
 
         ComputeScreenFactor();
@@ -344,17 +346,17 @@ void CGizmoTransformRotate::Draw() {
         if (mMask & AXIS_TRACKBALL) {
 
             if (m_RotateTypePredict != ROTATE_TWIN)
-                DrawCircle(orig, 0.2f, 0.2f, 0.2f, right * GetScreenFactor(), up * GetScreenFactor());
+                DrawCircle(env, orig, 0.2f, 0.2f, 0.2f, right * GetScreenFactor(), up * GetScreenFactor());
             else
-                DrawCircle(orig, 1, 1, 1, right * GetScreenFactor(), up * GetScreenFactor());
+                DrawCircle(env, orig, 1, 1, 1, right * GetScreenFactor(), up * GetScreenFactor());
         }
 
         // Screen
         if (mMask & AXIS_SCREEN) {
             if (m_RotateTypePredict != ROTATE_SCREEN)
-                DrawCircle(orig, 1.0f, 0.3f, 1.0f, up * 1.2f * GetScreenFactor(), right * 1.2f * GetScreenFactor());
+                DrawCircle(env, orig, 1.0f, 0.3f, 1.0f, up * 1.2f * GetScreenFactor(), right * 1.2f * GetScreenFactor());
             else
-                DrawCircle(orig, 1, 1, 1, up * 1.2f * GetScreenFactor(), right * 1.2f * GetScreenFactor());
+                DrawCircle(env, orig, 1, 1, 1, up * 1.2f * GetScreenFactor(), right * 1.2f * GetScreenFactor());
         }
 
         // X
@@ -366,9 +368,9 @@ void CGizmoTransformRotate::Draw() {
 
         if (mMask & AXIS_X) {
             if (m_RotateTypePredict != ROTATE_X)
-                DrawCircleHalf(orig, 1, 0, 0, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
+                DrawCircleHalf(env, orig, 1, 0, 0, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
             else
-                DrawCircleHalf(orig, 1, 1, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
+                DrawCircleHalf(env, orig, 1, 1, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
         }
 
         // Y
@@ -382,9 +384,9 @@ void CGizmoTransformRotate::Draw() {
         if (mMask & AXIS_Y) {
 
             if (m_RotateTypePredict != ROTATE_Y)
-                DrawCircleHalf(orig, 0, 1, 0, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
+                DrawCircleHalf(env, orig, 0, 1, 0, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
             else
-                DrawCircleHalf(orig, 1, 1, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
+                DrawCircleHalf(env, orig, 1, 1, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
         }
 
         // Z
@@ -396,13 +398,13 @@ void CGizmoTransformRotate::Draw() {
 
         if (mMask & AXIS_Z) {
             if (m_RotateTypePredict != ROTATE_Z)
-                DrawCircleHalf(orig, 0, 0, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
+                DrawCircleHalf(env, orig, 0, 0, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
             else
-                DrawCircleHalf(orig, 1, 1, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
+                DrawCircleHalf(env, orig, 1, 1, 1, right * GetScreenFactor(), frnt * GetScreenFactor(), plCam);
         }
         // camembert
         if ((m_RotateType != ROTATE_NONE) && (m_RotateType != ROTATE_TWIN))
-            DrawCamem(orig, m_Vtx * GetScreenFactor(), m_Vty * GetScreenFactor(), -m_Ng2);
+            DrawCamem(env, orig, m_Vtx * GetScreenFactor(), m_Vty * GetScreenFactor(), -m_Ng2);
         /*
         // debug
         glPointSize(20);
