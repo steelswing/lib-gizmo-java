@@ -315,7 +315,6 @@ public class Test {
     }
 
     public static void main(String[] args) throws Throwable {
-        System.load("libLibGizmo.dll");
         new Test().run();
     }
 
