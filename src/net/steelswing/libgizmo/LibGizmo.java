@@ -33,6 +33,8 @@ public class LibGizmo {
 
     public static native void nSetEditMatrix(long gizmo, FloatBuffer pMatrix);
 
+    public static native void nSetOffsetEditMatrix(long gizmo, FloatBuffer pMatrix);
+
     public static native void nSetCameraMatrix(long gizmo, FloatBuffer Model, FloatBuffer Proj);
 
     public static native void nSetScreenDimension(long gizmo, int screenWidth, int screenHeight);
@@ -75,6 +77,10 @@ public class LibGizmo {
 
     public void setEditMatrix(FloatBuffer pMatrix) {
         nSetEditMatrix(pointer, pMatrix);
+    }
+
+    public void setOffsetEditMatrix(FloatBuffer pMatrix) {
+        nSetOffsetEditMatrix(pointer, pMatrix);
     }
 
     public void setCameraMatrix(FloatBuffer Model, FloatBuffer Proj) {

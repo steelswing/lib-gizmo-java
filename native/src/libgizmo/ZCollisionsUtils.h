@@ -105,7 +105,7 @@ inline tvector3 CollisionClosestPointOnTriangle(tvector3 & point, tvector3 & ver
 inline char HitBoundingBox(float *minB, float *maxB, float *origin, float *dir, float *coord) {
     char inside = TRUE;
     char quadrant[NUMDIM];
-    register int i;
+    int i;
     int whichPlane;
     float maxT[NUMDIM];
     float candidatePlane[NUMDIM];

@@ -158,11 +158,33 @@ public class Test {
         GL21.glHint(GL21.GL_PERSPECTIVE_CORRECTION_HINT, GL21.GL_NICEST); // Really Nice Perspective Calculations
         GL21.glDepthMask(true);
 
-        gizmo = LibGizmo.create(GizmoType.GIZMO_SCALE);
+        gizmo = LibGizmo.create(GizmoType.GIZMO_MOVE);
         gizmo.setEditMatrix(objectMatrix);
         gizmo.setScreenDimension(width, height);
         gizmo.setDisplayScale(2);
-        System.out.println("aga");
+
+        gizmo.setLocation(Location.LOCATE_LOCAL);
+        gizmo.setAxisMask(RotateAxis.AXIS_X_BIT | RotateAxis.AXIS_Y_BIT | RotateAxis.AXIS_Z_BIT);
+        gizmo.useSnap(true);
+        float snap = 1;
+
+        gizmo.setSnap(snap, snap, snap);
+        gizmo.setSnap(snap);
+
+        {
+            FloatBuffer offsetMatrix = BufferUtils.createFloatBuffer(16);
+
+            offsetMatrix.put(new float[]{
+                1.f, 0.f, 0.f, 0.f,
+                0.f, 1.f, 0.f, 0.f,
+                0.f, 0.f, 1.f, 0.f,
+                0.f, 0.f, 0.f, 1.f}).position(0);
+            offsetMatrix.put(12, 4);
+            offsetMatrix.put(13, 0);
+            offsetMatrix.put(14, 0);
+
+            gizmo.setOffsetEditMatrix(offsetMatrix);
+        }
 
         GLFW.glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
             mouseX = (int) xpos;
@@ -330,6 +352,7 @@ public class Test {
         GL21.glMatrixMode(GL21.GL_MODELVIEW);
         GL21.glLoadIdentity();
         GL21.glLoadMatrixf(viewMat);
+        System.out.println(objectMatrix.get(12) + " " + objectMatrix.get(13) + " " + objectMatrix.get(14));
 
         GL21.glPushMatrix();
         GL21.glMultMatrixf(objectMatrix);

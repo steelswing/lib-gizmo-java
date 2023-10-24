@@ -29,12 +29,6 @@
 
 #include "stdafx.h"
 #include "GizmoTransformScale.h"
-#ifdef MAC_OS
-#import <OpenGL/OpenGL.h>
-#else
-#include <GL/gl.h>
-#endif
-
 extern tvector3 ptd;
 
 IGizmo *CreateScaleGizmo() {
@@ -72,11 +66,11 @@ bool CGizmoTransformScale::GetOpType(SCALETYPE &type, unsigned int x, unsigned i
 
     //tmatrix mt;
     if (mLocation == LOCATE_LOCAL) {
-        mt = *m_pMatrix;
+        mt = getEditMat();
         mt.Inverse();
     } else {
         // world
-        mt.Translation(-m_pMatrix->V4.position);
+        mt.Translation(-getEditMat().V4.position);
     }
 
     // ray casting
@@ -264,7 +258,7 @@ void CGizmoTransformScale::Draw(JNIEnv *env) {
         ComputeScreenFactor();
 
         //glDisable(GL_DEPTH_TEST);
-        tvector3 orig(m_pMatrix->m16[12], m_pMatrix->m16[13], m_pMatrix->m16[14]);
+        tvector3 orig(getEditMat().m16[12], getEditMat().m16[13], getEditMat().m16[14]);
 
 
         // axis

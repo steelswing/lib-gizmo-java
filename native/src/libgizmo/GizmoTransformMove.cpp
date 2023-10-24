@@ -29,11 +29,6 @@
 
 #include "stdafx.h"
 #include "GizmoTransformMove.h"
-#ifdef MAC_OS
-#import <OpenGL/OpenGL.h>
-#else
-#include <GL/gl.h>
-#endif
 
 IGizmo *CreateMoveGizmo() {
     return new CGizmoTransformMove;
@@ -75,11 +70,11 @@ bool CGizmoTransformMove::GetOpType(MOVETYPE &type, unsigned int x, unsigned int
 
     tmatrix mt;
     if (mLocation == LOCATE_LOCAL) {
-        mt = *m_pMatrix;
+        mt = getEditMat();
         mt.Inverse();
     } else {
         // world
-        mt.Translation(-m_pMatrix->V4.position);
+        mt.Translation(-getEditMat().V4.position);
     }
 
     // plan 1 : X/Z
@@ -213,7 +208,7 @@ void CGizmoTransformMove::Draw(JNIEnv *env) {
     if (m_pMatrix) {
 
         //glDisable(GL_DEPTH_TEST);
-        tvector3 orig = m_pMatrix->GetTranslation();
+        tvector3 orig = getEditMat().GetTranslation();
 
         tvector3 axeX(1, 0, 0), axeY(0, 1, 0), axeZ(0, 0, 1);
 

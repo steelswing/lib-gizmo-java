@@ -31,11 +31,6 @@
 #include "GizmoTransformRotate.h"
 #include <stdio.h>
 #include <iostream>
-#ifdef MAC_OS
-#import <OpenGL/OpenGL.h>
-#else
-#include <GL/gl.h>
-#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

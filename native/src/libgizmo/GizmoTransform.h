@@ -31,12 +31,14 @@
 
 #include "GizmoTransformRender.h"
 #include "IGizmo.h"
+#include "ZBaseMaths.h"
 
 class CGizmoTransform : public IGizmo, protected CGizmoTransformRender {
 public:
 
     CGizmoTransform() {
         m_pMatrix = NULL;
+        m_offsetMatrix = tmatrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); // identity matrix
         m_bUseSnap = false;
         //mCamera = NULL;
         //mTransform = NULL;
@@ -54,10 +56,15 @@ public:
 
     virtual void SetEditMatrix(float *pMatrix) {
         m_pMatrix = (tmatrix*) pMatrix;
+
         //mTransform = NULL;
 
         mEditPos = mEditScale = NULL;
         mEditQT = NULL;
+    }
+
+    virtual void SetOffsetEditMatrix(float *offsetMatrix) {
+        m_offsetMatrix = *((tmatrix*) offsetMatrix);
     }
 
     virtual void SetDisplayScale(float aScale) {
@@ -161,7 +168,7 @@ public:
                 break;
         }
         if (mLocation == LOCATE_LOCAL) {
-            vt.TransformVector(*m_pMatrix);
+            vt.TransformVector(getEditMat());
             vt.Normalize();
         }
         return vt;
@@ -197,7 +204,7 @@ public:
 
         tvector3 df, inters;
 
-        m_plan = vector4(m_pMatrix->GetTranslation(), norm);
+        m_plan = vector4(getEditMat().GetTranslation(), norm);
         m_plan.RayInter(inters, rayOrigin, rayDir);
         df.TransformPoint(inters, mt);
 
@@ -248,8 +255,11 @@ public:
     }
 
 
+
 protected:
     tmatrix *m_pMatrix;
+    tmatrix m_offsetMatrix;
+
     tmatrix m_Model, m_Proj;
     tmatrix m_invmodel, m_invproj;
     tvector3 m_CamSrc, m_CamDir, m_CamUp;
@@ -272,6 +282,10 @@ protected:
         float sn = (float) fmod(pos, snap);
         if (fabs(sn)< (snap * 0.25f)) pos -= sn;
         if (fabs(sn)> (snap * 0.25f)) pos = ((pos - sn) + ((sn > 0) ? snap : -snap));
+    }
+
+    tmatrix getEditMat() {
+        return (*m_pMatrix) * m_offsetMatrix;
     }
 
     int mScreenWidth, mScreenHeight;

@@ -72,6 +72,21 @@ JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetEditMatrix(JNIE
 
 /*
  * Class:     net_steelswing_libgizmo_LibGizmo
+ * Method:    nSetOffsetEditMatrix
+ * Signature: (Ljava/nio/FloatBuffer;)V
+ */
+JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetOffsetEditMatrix(JNIEnv * env, jclass cls, jlong pointer, jobject pMatrix) {
+    IGizmo* gizmo = reinterpret_cast<IGizmo*> (pointer);
+    if (gizmo == nullptr) {
+        std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nSetOffsetEditMatrix\n";
+        return;
+    }
+    float *pMatrixBuf = (float *) env->GetDirectBufferAddress(pMatrix);
+    gizmo->SetOffsetEditMatrix(pMatrixBuf);
+}
+
+/*
+ * Class:     net_steelswing_libgizmo_LibGizmo
  * Method:    nSetCameraMatrix
  * Signature: (Ljava/nio/FloatBuffer;Ljava/nio/FloatBuffer;)V
  */
@@ -123,7 +138,7 @@ JNIEXPORT jboolean JNICALL Java_net_steelswing_libgizmo_LibGizmo_nOnMouseDown(JN
     IGizmo* gizmo = reinterpret_cast<IGizmo*> (pointer);
     if (gizmo == nullptr) {
         std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nOnMouseDown\n";
-        return;
+        return false;
     }
     return gizmo->OnMouseDown(x, y);
 }
@@ -179,7 +194,7 @@ JNIEXPORT jboolean JNICALL Java_net_steelswing_libgizmo_LibGizmo_nIsUsingSnap(JN
     IGizmo* gizmo = reinterpret_cast<IGizmo*> (pointer);
     if (gizmo == nullptr) {
         std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nIsUsingSnap\n";
-        return;
+        return false;
     }
     return gizmo->IsUsingSnap();
 }
@@ -224,7 +239,7 @@ JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetLocation(JNIEnv
         return;
     }
 
-    gizmo->SetLocation(newLocation);
+    gizmo->SetLocation(static_cast<IGizmo::LOCATION>(newLocation));
 }
 
 /*
@@ -236,7 +251,7 @@ JNIEXPORT jint JNICALL Java_net_steelswing_libgizmo_LibGizmo_nGetLocation(JNIEnv
     IGizmo* gizmo = reinterpret_cast<IGizmo*> (pointer);
     if (gizmo == nullptr) {
         std::cout << "Nullptr Java_net_steelswing_libgizmo_LibGizmo_nGetLocation\n";
-        return;
+        return 0;
     }
 
     return gizmo->GetLocation();

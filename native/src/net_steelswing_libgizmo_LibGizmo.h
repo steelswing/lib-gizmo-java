@@ -25,6 +25,9 @@ extern "C" {
     JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetEditMatrix
     (JNIEnv *, jclass, jlong, jobject);
 
+    JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetOffsetEditMatrix
+    (JNIEnv *, jclass, jlong, jobject);
+
     /*
      * Class:     net_steelswing_libgizmo_LibGizmo
      * Method:    nSetCameraMatrix
@@ -153,7 +156,7 @@ extern "C" {
     JNIEXPORT void JNICALL Java_net_steelswing_libgizmo_LibGizmo_nSetRenderer
     (JNIEnv *, jclass, jlong, jobject);
 
-     
+
 #ifdef __cplusplus
 }
 #endif

@@ -10,7 +10,6 @@ GizmoJNIEnv* gizmoEnv;
 jmethodID setupENV(GizmoJNIEnv* gizmoEnvIn) {
     gizmoEnv = gizmoEnvIn;
 }
-
 GizmoJNIEnv* getGizmoEnv() {
     return gizmoEnv;
 }
